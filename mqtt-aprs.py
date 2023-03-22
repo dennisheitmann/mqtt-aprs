@@ -35,7 +35,7 @@ from datetime import datetime, timedelta
 
 # Read the config file
 config = configparser.RawConfigParser()
-config.read("/etc/mqtt-aprs/mqtt-aprs.cfg")
+config.read("/home/dennis/.mqtt-aprs.cfg")
 
 # Use configparser to read the settings
 DEBUG = config.getboolean("global", "debug")
@@ -44,7 +44,7 @@ MQTT_HOST = config.get("global", "mqtt_host")
 MQTT_PORT = config.getint("global", "mqtt_port")
 MQTT_TLS = config.getint("global", "mqtt_tls")
 MQTT_SUBTOPIC = config.get("global", "mqtt_subtopic")
-MQTT_TOPIC = "/raw/" + socket.getfqdn() + "/" + MQTT_SUBTOPIC
+MQTT_TOPIC = "APRS/raw/" + socket.getfqdn() + "/" + MQTT_SUBTOPIC
 MQTT_USERNAME = config.get("global", "mqtt_username")
 MQTT_PASSWORD = config.get("global", "mqtt_password")
 METRICUNITS = config.get("global", "metricunits")
@@ -60,8 +60,8 @@ APRS_LATITUDE = config.get("global", "aprs_latitude")
 APRS_LONGITUDE = config.get("global", "aprs_longitude")
 
 APPNAME = MQTT_SUBTOPIC
-PRESENCETOPIC = "clients/" + socket.getfqdn() + "/" + APPNAME +"/state"
-setproctitle.setproctitle(APPNAME)
+PRESENCETOPIC = "APRS/clients/" + socket.getfqdn() + "/" + APPNAME +"/state"
+setproctitle.setproctitle("Python-APRS2MQTT")
 client_id = APPNAME + "_%d" % os.getpid()
 
 mqttc = paho.Client()
@@ -337,23 +337,24 @@ def aprs_connect():
 
 signal.signal(signal.SIGTERM, cleanup)
 signal.signal(signal.SIGINT, cleanup)
-try:
-    aprs = aprslib.IS(APRS_CALLSIGN,
-                      passwd=APRS_PASSWORD,
-                      host=APRS_HOST,
-                      port=APRS_PORT,
-                      skip_login=False)
-    connect()
-    aprs_connect()
 
-except KeyboardInterrupt:
-    logging.info("Interrupted by keypress")
-    sys.exit(0)
-except aprslib.ConnectionDrop:
-    logging.info("Connection to APRS server dropped, trying again in 30 seconds...")
-    time.sleep(30)
-    aprs_connect
-except aprslib.ConnectionError:
-    logging.info("Connection to APRS server failed, trying again in 30 seconds...")
-    time.sleep(30)
-    aprs_connect
+aprs = aprslib.IS(APRS_CALLSIGN,
+                  passwd=APRS_PASSWORD,
+                  host=APRS_HOST,
+                  port=APRS_PORT,
+                  skip_login=False)
+
+def keepTrying():
+    try:
+        logging.info("Starting...")
+        connect()
+        aprs_connect()
+    except KeyboardInterrupt:
+        logging.info("Interrupted by keypress")
+        sys.exit(0)
+    except Exception as e:
+        logging.info("Oha, something happened...")
+        logging.info(e)
+        time.sleep(10)
+        keepTrying()
+keepTrying()
