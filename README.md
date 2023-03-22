@@ -1,7 +1,6 @@
 # mqtt-aprs
 
 ### This is a fork of Steve Miller's code found at https://github.com/kc1awv/mqtt-aprs
-### This is a fork of Mike Loebl's code found at https://github.com/mloebl/mqtt-aprs
 
 Connects to the specified APRS-IS server, and posts the APRS output to MQTT. Can parse parameters, or dump the raw JSON from aprslib. It's currently for receive only from APRS-IS and sending to an MQTT server.
 
