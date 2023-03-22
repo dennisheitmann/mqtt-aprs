@@ -21,7 +21,7 @@ git clone https://github.com/dennisheitmann/mqtt-aprs.git
 
 cd mqtt-aprs
 
-sudo cp mqtt-aprs.cfg.example /user/$USER/.mqtt-aprs.cfg
+cp mqtt-aprs.cfg.example /user/$USER/.mqtt-aprs.cfg
 ```
 
 **Important:** Edit .mqtt-aprs.cfg to suit
