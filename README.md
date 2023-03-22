@@ -1,10 +1,9 @@
 # mqtt-aprs
 
-## This is a fork of Steve Miller's code found at https://github.com/kc1awv/mqtt-aprs
+### This is a fork of Steve Miller's code found at https://github.com/kc1awv/mqtt-aprs
+### This is a fork of Mike Loebl's code found at https://github.com/mloebl/mqtt-aprs
 
-## This is a fork of Mike Loebl's code found at https://github.com/mloebl/mqtt-aprs
-
-Connects to the specified APRS-IS server, and posts the APRS output to MQTT.  Can parse parameters, or dump the raw JSON from aprslib.  It's currently for receive only from APRS-IS and sending to an MQTT server.
+Connects to the specified APRS-IS server, and posts the APRS output to MQTT. Can parse parameters, or dump the raw JSON from aprslib. It's currently for receive only from APRS-IS and sending to an MQTT server.
 
 This script uses 
 - `aprslib`, https://github.com/rossengeorgiev/aprs-python, to do the heavy APRS lifting
@@ -19,24 +18,24 @@ This script uses
 
 
 ```bash
-git clone https://github.com/kc1awv/mqtt-aprs.git
+git clone https://github.com/dennisheitmann/mqtt-aprs.git
 
 cd mqtt-aprs
 
-sudo cp mqtt-aprs.cfg.example /etc/mqtt-aprs/mqtt-aprs.cfg
+sudo cp mqtt-aprs.cfg.example /user/$USER/.mqtt-aprs.cfg
 ```
 
-**Important:** Edit /etc/mqtt-aprs/mqtt-aprs.cfg to suit
+**Important:** Edit .mqtt-aprs.cfg to suit
 
 Then, simply `python3 mqtt-aprs.py` and use an MQTT client to subscribe to the topics!
 
 ### AVAILABLE TOPICS BY DEFAULT
 
-`/raw/(HOSTNAME)/ssid/raw`
+`APRS/raw/(HOSTNAME)/ssid/raw`
 
 Example: `VE2TFZ-D>APDG03,TCPIP*,qAC,VE2TFZ-DS:!4522.92ND07329.55W&/A=000000440 MMDVM Voice 438.80000MHz +0.0000MHz, APRS for DMRGateway`
 
-`/raw/(HOSTNAME)/aprs/position`
+`APRS/raw/(HOSTNAME)/aprs/position`
 
 Example:
 ```
@@ -48,7 +47,7 @@ Example:
   "speed": 55.56 }
 ```
 
-`/raw/(HOSTNAME)/aprs/weather`
+`APRS/raw/(HOSTNAME)/aprs/weather`
 
 Example: 
 ```
@@ -65,7 +64,7 @@ Example:
   "wind_speed": 0 }
 ```
 
-`/raw/(HOSTNAME)/aprs/message`
+`APRS/raw/(HOSTNAME)/aprs/message`
 
 Example: 
 ```
@@ -73,13 +72,8 @@ Example:
   "message": "220000z,Heat,NJC013-CTZ005>012-NJZ002-004-006-103>106-NYZ067>071" }
 ```
 
-### WHY
-
-Uh, why not? It's fun, and you could even do things like this:
-![node-red worldmap](mqtt-aprs.png)
+### Credits 
 
 APRS is a registered trademark Bob Bruninga, WB4APR
-
 Originally forked by Mike Loebl from original https://github.com/kylegordon/mqtt-owfs-temp, and customised for use with APRS
-
 [mqtt-aprs](https://github.com/mloebl/mqtt-aprs) forked, modified and tested against Python 3 by Steve Miller
