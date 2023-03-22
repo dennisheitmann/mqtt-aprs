@@ -1,20 +1,22 @@
 #!/usr/bin/env python
 # -*- coding: iso-8859-1 -*-
 
-__author__ = "Steve Miller"
-__copyright__ = "Copyright (C) Steve Miller"
+__author__ = "Dennis Heitmann"
+__copyright__ = "Copyright (C) Dennis Heitmann"
 
-__credits__ = ["Mike Loebl - https://github.com/mloebl/mqtt-aprs"]
+__credits__ = ["Steve Miller - https://github.com/kc1awv/mqtt-aprs"]
 __license__ = "GPL"
-__version__ = "0.0.1"
-__maintainer__ = "Steve Miller"
-__email__ = "smiller _at_ kc1awv _dot_ net"
+__version__ = "0.0.3"
+__maintainer__ = "Dennis Heitmann"
+__email__ = "dennis _at_ dennisheitmann _dot_ de"
 __status__ = "Development"
 
 # Script based on mqtt-owfs-temp written by Kyle Gordon and converted for use with APRS
 # Source: https://github.com/kylegordon/mqtt-owfs-temp
 # Additional Python 3 development and conversions of Mike Loebl's code by Steve Miller, KC1AWV
 # Source: https://github.com/mloebl/mqtt-aprs
+# Additional development by Steve Miller
+# Source: https://github.com/kc1awv/mqtt-aprs
 # APRS is a registered trademark Bob Bruninga, WB4APR
 
 import os
