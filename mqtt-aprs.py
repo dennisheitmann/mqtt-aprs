@@ -37,9 +37,8 @@ from datetime import datetime, timedelta
 
 # Read the config file
 config = configparser.RawConfigParser()
-configPathAndFile = os.path.expanduser('~') + "/.mqtt-aprs.cfg"                                                                                                 
+configPathAndFile = os.path.expanduser('~') + "/.mqtt-aprs.cfg"
 config.read(configPathAndFile)
-
 # Use configparser to read the settings
 DEBUG = config.getboolean("global", "debug")
 LOGFILE = config.get("global", "logfile")
@@ -144,7 +143,7 @@ def on_log(mosq, obj, level, string):
     logging.debug(string)
 
 def cleanup(signum, frame):
-    logging.info("Disconnecting from broker")
+    logging.info("Disconnecting from MQTT broker")
     mqttc.publish(PRESENCETOPIC, "0", retain=True)
     mqttc.disconnect()
     mqttc.loop_stop()
@@ -152,7 +151,7 @@ def cleanup(signum, frame):
     sys.exit(signum)
 
 def connect():
-    logging.info("Connecting to %s:%s", MQTT_HOST, MQTT_PORT)
+    logging.info("MQTT: Connecting to %s:%s", MQTT_HOST, MQTT_PORT)
     if MQTT_USERNAME:
         logging.info("Found username %s", MQTT_USERNAME)
         mqttc.username_pw_set(MQTT_USERNAME, MQTT_PASSWORD)
@@ -162,7 +161,7 @@ def connect():
     mqttc.will_set(PRESENCETOPIC, "0", qos=0, retain=True)
     result = mqttc.connect(MQTT_HOST, MQTT_PORT, 10)
     if result != 0:
-        logging.info("Connection failed with error code %s. Retrying", result)
+        logging.info("MQTT: Connection failed with error code %s. Retrying", result)
         time.sleep(10)
         connect()
     mqttc.on_connect = on_connect
@@ -330,6 +329,7 @@ def get_distance(inlat, inlon):
         return round(distance, 2)
 
 def aprs_connect():
+    logging.info("Starting APRS connection...")
     aprs.set_filter(APRS_FILTER)
     aprs.connect(blocking=True)
     logging.debug("APRS Processing: %s", APRS_PROCESS)
